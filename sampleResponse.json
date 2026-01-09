@@ -1,0 +1,51 @@
+{
+    "pageNumber": 1,
+    "pageSize": 15,
+    "orderBy": "string",
+    "orderDirection": "ASCENDING",
+    "items": [
+        {
+            "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+            "createdAt": "2026-01-09T15:45:51.522Z",
+            "updatedAt": "2026-01-09T15:45:51.522Z",
+            "archived": true,
+            "companyId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+            "panelId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+            "panelTitle": "string",
+            "stepId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+            "stepTitle": "string",
+            "stepPhase": "NONE",
+            "position": 0,
+            "title": "string",
+            "description": "string",
+            "key": "string",
+            "number": 0,
+            "dueDate": "2026-01-09T15:45:51.522Z",
+            "isOverdue": true,
+            "tagIds": [
+                "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+            ],
+            "sessionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+            "monetaryAmount": 0,
+            "responsibleUserId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+            "responsibleUser": {
+                "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                "name": "string"
+            },
+            "contactIds": [
+                "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+            ],
+            "contacts": [
+                {
+                    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                    "name": "string"
+                }
+            ],
+            "customFields": {},
+            "metadata": {}
+        }
+    ],
+    "totalItems": 0,
+    "totalPages": 0,
+    "hasMorePages": true
+}
