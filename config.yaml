@@ -5,12 +5,10 @@ credentials:
       name: Marcelo
       password: $2b$12$D9Edo76H7CsmYqyqmej.quPlEkAucFeiejYTIST.RBsjE.kvEUDN6
     diogonobre@diogonobreadvogados.com.br:
-      email: diogonobre@diogonobreadvogados.com.br
+      email: diogo.nobre@diogonobreadvogados.com.br
       name: Diogo Nobre
       password: $2b$12$eG1X7qxCi92NPMiVwXFJoeuoL0MP7SjPC66OdwJqX27kdcLSZTiNO
 cookie:
   expiry_days: 30
   key: some_signature_key
   name: crm_auth_cookie
-
-# python -c "import streamlit_authenticator as stauth; print(stauth.Hasher.hash('diogonobre123'))"
