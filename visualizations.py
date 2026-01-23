@@ -7,6 +7,9 @@ class Visualizer:
     @staticmethod
     def plot_funnel(df_funnel: pd.DataFrame, title: str = "Funil de Vendas"):
         """Gráfico de Funil (Quantidade ou Valor)"""
+        if df_funnel.empty:
+            return None
+            
         is_monetary = df_funnel["Quantidade"].mean() > 1000 # Heurística simples
         
         fig = px.funnel(df_funnel, x="Quantidade", y="Etapa", title=title)

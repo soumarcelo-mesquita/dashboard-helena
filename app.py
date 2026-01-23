@@ -6,6 +6,7 @@ import streamlit_authenticator as stauth
 from api_client import HelenaAPIClient
 from data_processor import DataProcessor
 from visualizations import Visualizer
+from datetime import datetime, timedelta
 import os
 from dotenv import load_dotenv
 
@@ -55,6 +56,15 @@ if authentication_status:
     action_types = ["Todos", "258", "439", "FUNASA", "CARPH"]
     selected_action = st.sidebar.selectbox("Filtrar por Tipo de Ação", action_types)
     
+    today = datetime.now().date()
+    start_default = today - timedelta(days=30)
+    
+    col_d1, col_d2 = st.sidebar.columns(2)
+    with col_d1:
+        start_date = st.date_input("Data Inicial", value=start_default, format="DD/MM/YYYY")
+    with col_d2:
+        end_date = st.date_input("Data Final", value=today, format="DD/MM/YYYY")
+    
     # Panel ID is constant as per requested
     panel_id = os.getenv("HELENA_PANEL_ID")
     
@@ -81,11 +91,25 @@ if authentication_status:
     # Data Processing
     df_raw = data_processor.process_cards(cards)
     
-    # Aplicar filtro de Action Type
+    # Aplicar filtros
+    df = df_raw.copy()
+    
+    # Filtro de Action Type
     if selected_action != "Todos":
-        df = df_raw[df_raw["actionType"] == selected_action].copy()
-    else:
-        df = df_raw.copy()
+        df = df[df["actionType"] == selected_action]
+        
+    # Filtro de Data de Criação
+    # Converter para datetime64[ns, UTC] para comparar com createdAt que tem timezone
+    start_dt = pd.to_datetime(start_date).tz_localize('UTC')
+    # Para o end_date, somar 1 dia para pegar até o final do dia selecionado
+    end_dt = pd.to_datetime(end_date).tz_localize('UTC') + pd.Timedelta(days=1) - pd.Timedelta(seconds=1)
+    
+    df = df[(df["createdAt"] >= start_dt) & (df["createdAt"] <= end_dt)]
+    
+    # Check if empty
+    if df.empty:
+        st.warning("⚠️ Nenhum card encontrado para o período e filtros selecionados.")
+        st.stop()
     
     # KPIs atop the page
     st.title("Diogo Nobre Advogados")
@@ -118,7 +142,10 @@ if authentication_status:
             st.subheader("Funil de Conversão (Quantidade)")
             funnel_data = data_processor.get_conversion_data(df)
             fig_funnel = Visualizer.plot_funnel(funnel_data)
-            st.plotly_chart(fig_funnel, width="stretch")
+            if fig_funnel:
+                st.plotly_chart(fig_funnel, width="stretch")
+            else:
+                st.info("Sem dados para o funil de quantidade.")
             
         with col_f2:
             st.subheader("Funil de Conversão (Valor)")
@@ -128,7 +155,10 @@ if authentication_status:
             funnel_val = funnel_val.sort_values("Etapa").dropna(subset=["Etapa"])
             
             fig_funnel_val = Visualizer.plot_funnel(funnel_val, title="Valor por Etapa")
-            st.plotly_chart(fig_funnel_val, width="stretch")
+            if fig_funnel_val:
+                st.plotly_chart(fig_funnel_val, width="stretch")
+            else:
+                st.info("Sem dados para o funil de valor.")
 
         st.divider()
         st.subheader("Quantidade de Cards por Status")
